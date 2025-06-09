@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
-      - JWT_SECRET=46c3e48c7dc6bc35eb6f5332254669a9a0a29111e6573d169a0fd38c6820b2cc
       - PORT=8080
