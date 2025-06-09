@@ -1,0 +1,847 @@
+{
+	"info": {
+		"_postman_id": "4bcc8d16-66c3-4362-9c03-1c5694660dad",
+		"name": "Recipe API Collection",
+		"description": "A comprehensive API for recipe sharing platform with AI-powered features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29688820"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"    pm.collectionVariables.set('user_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john_doe\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate user and return JWT token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve paginated list of all users (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Retrieve user details by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Delete user account (Admin only)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Get All Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve paginated list of all recipes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('recipe_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Spaghetti Carbonara\",\n  \"description\": \"Classic Italian pasta dish with eggs, cheese, and pancetta\",\n  \"instructions\": \"1. Boil spaghetti until al dente\\n2. Cook pancetta until crispy\\n3. Mix eggs with cheese\\n4. Combine pasta with pancetta\\n5. Add egg mixture off heat\\n6. Toss quickly and serve\",\n  \"preparationTime\": 15,\n  \"cookingTime\": 20,\n  \"servings\": 4,\n  \"difficulty\": \"MEDIUM\",\n  \"imageUrl\": \"https://example.com/carbonara.jpg\",\n  \"categoryId\": 1,\n  \"ingredients\": [\n    {\n      \"name\": \"Spaghetti\",\n      \"quantity\": 400,\n      \"unit\": \"g\"\n    },\n    {\n      \"name\": \"Pancetta\",\n      \"quantity\": 150,\n      \"unit\": \"g\"\n    },\n    {\n      \"name\": \"Eggs\",\n      \"quantity\": 3,\n      \"unit\": \"pieces\"\n    },\n    {\n      \"name\": \"Parmesan cheese\",\n      \"quantity\": 100,\n      \"unit\": \"g\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/recipes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes"
+							]
+						},
+						"description": "Create a new recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipe by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Retrieve recipe details by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recipe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Spaghetti Carbonara (Updated)\",\n  \"description\": \"Updated classic Italian pasta dish with eggs, cheese, and pancetta\",\n  \"instructions\": \"1. Boil spaghetti until al dente\\n2. Cook pancetta until crispy\\n3. Mix eggs with cheese and black pepper\\n4. Combine pasta with pancetta\\n5. Add egg mixture off heat\\n6. Toss quickly and serve immediately\",\n  \"preparationTime\": 15,\n  \"cookingTime\": 25,\n  \"servings\": 4,\n  \"difficulty\": \"MEDIUM\",\n  \"imageUrl\": \"https://example.com/carbonara-updated.jpg\",\n  \"categoryId\": 1,\n  \"ingredients\": [\n    {\n      \"name\": \"Spaghetti\",\n      \"quantity\": 400,\n      \"unit\": \"g\"\n    },\n    {\n      \"name\": \"Pancetta\",\n      \"quantity\": 150,\n      \"unit\": \"g\"\n    },\n    {\n      \"name\": \"Eggs\",\n      \"quantity\": 3,\n      \"unit\": \"pieces\"\n    },\n    {\n      \"name\": \"Parmesan cheese\",\n      \"quantity\": 100,\n      \"unit\": \"g\"\n    },\n    {\n      \"name\": \"Black pepper\",\n      \"quantity\": 1,\n      \"unit\": \"tsp\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/recipes/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Update existing recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Delete recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/search?keyword=pasta&page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "pasta"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Search recipes by keyword"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipes by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/user/{{user_id}}?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"user",
+								"{{user_id}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve recipes created by specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipes by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/category/{{category_id}}?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"category",
+								"{{category_id}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve recipes from specific category"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						},
+						"description": "Retrieve list of all categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('category_id', response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Italian Cuisine\",\n  \"description\": \"Traditional Italian recipes and dishes\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						},
+						"description": "Create a new category (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Retrieve category details by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Italian Cuisine (Updated)\",\n  \"description\": \"Updated traditional Italian recipes and authentic dishes\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Update existing category (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Delete category (Admin only)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get Comments by Recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/{{recipe_id}}/comments?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipe_id}}",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve paginated comments for a recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This recipe is absolutely delicious! Made it for my family and everyone loved it.\",\n  \"rating\": 5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/recipes/{{recipe_id}}/comments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"{{recipe_id}}",
+								"comments"
+							]
+						},
+						"description": "Add a comment to a recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"Updated: This recipe is absolutely amazing! Made it multiple times and it never disappoints.\",\n  \"rating\": 5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/comments/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"1"
+							]
+						},
+						"description": "Update existing comment"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/comments/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"1"
+							]
+						},
+						"description": "Delete comment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Get User Favorites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/favorites/user/{{user_id}}?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"favorites",
+								"user",
+								"{{user_id}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retrieve paginated favorite recipes for a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Favorites",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/favorites/recipe/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"favorites",
+								"recipe",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Add a recipe to user's favorites"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Favorites",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/favorites/recipe/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"favorites",
+								"recipe",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Remove a recipe from user's favorites"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AI Features",
+			"item": [
+				{
+					"name": "Get Recipe Suggestions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ingredients\": [\"chicken\", \"tomatoes\", \"onions\", \"garlic\", \"basil\"],\n  \"cuisine\": \"Italian\",\n  \"difficulty\": \"MEDIUM\",\n  \"maxTime\": 45\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ai/suggest-recipe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ai",
+								"suggest-recipe"
+							]
+						},
+						"description": "Generate recipe suggestions based on available ingredients"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipe Improvements",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ai/improve-recipe/{{recipe_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ai",
+								"improve-recipe",
+								"{{recipe_id}}"
+							]
+						},
+						"description": "Get AI suggestions to improve an existing recipe"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat with AI",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"message\": \"How can I make my pasta sauce more flavorful?\",\n  \"recipeId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ai/chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ai",
+								"chat"
+							]
+						},
+						"description": "Have a conversation with the AI culinary assistant"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "recipe_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
