@@ -21,19 +21,19 @@ public class UserService {
 
     public Page<UserDto> getAllUsers(Pageable pageable) {
         return userRepository.findAllUsers(pageable)
-                .map(this::convertToDTO);
+                .map(this::convertToDto);
     }
 
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        return convertToDTO(user);
+        return convertToDto(user);
     }
 
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
-        return convertToDTO(user);
+        return convertToDto(user);
     }
 
     public void deleteUser(Long id) {
@@ -42,7 +42,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    private UserDto convertToDTO(User user) {
+    private UserDto convertToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
