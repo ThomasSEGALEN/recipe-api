@@ -48,12 +48,14 @@ The Recipe API is a full-featured backend service that enables users to create, 
    ```env
    JWT_SECRET=your_jwt_secret
    MISTRAL_API_KEY=your_mistral_ai_api_key
+   APP_URL=your_app_url
    ```
    
    Alternatively, you can export them as system environment variables:
    ```bash
    export JWT_SECRET=your_jwt_secret
    export MISTRAL_API_KEY=your_mistral_ai_api_key
+   export APP_URL=your_app_url
    ```
 
 3. **Build the Project**
@@ -118,6 +120,7 @@ docker run -p 8080:8080 --env-file .env recipe-api
 docker run -p 8080:8080 \
   -e JWT_SECRET=your_jwt_secret \
   -e MISTRAL_API_KEY=your_mistral_ai_api_key \
+  -e APP_URL=your_app_url \
   recipe-api
 ```
 
@@ -128,6 +131,7 @@ Create a `.env` file in your project root:
 ```env
 JWT_SECRET=your_jwt_secret
 MISTRAL_API_KEY=your_mistral_ai_api_key
+APP_URL=your_app_url
 ```
 
 Create a `docker-compose.yml` file:
@@ -157,6 +161,7 @@ docker-compose up
 docker run -p 8080:8080 \
   -e JWT_SECRET=your_jwt_secret \
   -e MISTRAL_API_KEY=your_mistral_ai_api_key \
+  -e APP_URL=your_app_url \
   votre-username/recipe-api:latest
 ```
 
@@ -189,13 +194,14 @@ Render.com (automatic deployment via webhook)
 
 Set these environment variables in your production environment (Render.com):
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `JWT_SECRET` | JWT signing secret (min. 32 chars) | ✅ |
-| `MISTRAL_API_KEY` | Mistral AI API key | ❌ |
-| `PORT` | Application port | ✅ (8080) |
-| `DB_USERNAME` | Database username (if using MySQL) | ❌ |
-| `DB_PASSWORD` | Database password (if using MySQL) | ❌ |
+| Variable          | Description                        | Required |
+|-------------------|------------------------------------|----------|
+| `JWT_SECRET`      | JWT signing secret                 | ✅        |
+| `MISTRAL_API_KEY` | Mistral AI API key                 | ❌        |
+| `APP_URL`         | Application URL                    | ❌        |
+| `PORT`            | Application port                   | ✅ (8080) |
+| `DB_USERNAME`     | Database username (if using MySQL) | ❌        |
+| `DB_PASSWORD`     | Database password (if using MySQL) | ❌        |
 
 ### CI/CD Setup
 
@@ -358,6 +364,16 @@ The collection includes:
 - **Java 17** - Programming language
 - **Docker** - Containerization
 - **GitHub Actions** - CI/CD pipeline
+
+## 🔧 Swagger Configuration
+
+The API automatically configures Swagger documentation based on the environment:
+
+Local Development: Points to http://localhost:8080
+Production: Points to your production URL (e.g., https://recipe-api-latest.onrender.com)
+
+To override the server URL in production, set the APP_URL environment variable:
+APP_URL=https://your-app-url.com
 
 ## 📖 API Schema
 
