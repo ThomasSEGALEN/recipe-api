@@ -33,20 +33,27 @@ The Recipe API is a full-featured backend service that enables users to create, 
 - Gradle 7.0 or higher
 - Mistral AI API key
 - Optional: MySQL for production deployment
+- Docker (for containerized deployment)
 
 ### Local Development Setup
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/ThomasSEGALEN/recipe-api.git
    cd recipe-api
    ```
 
-2. **Configure Environment Variables (Optional)**
-   The application comes with default configurations but you can override them:
+2. **Configure Environment Variables**
+   Create a `.env` file in your project root:
+   ```env
+   JWT_SECRET=your_jwt_secret
+   MISTRAL_API_KEY=your_mistral_ai_api_key
+   ```
+   
+   Alternatively, you can export them as system environment variables:
    ```bash
+   export JWT_SECRET=your_jwt_secret
    export MISTRAL_API_KEY=your_mistral_ai_api_key
-   export JWT_SECRET=your_custom_jwt_secret
    ```
 
 3. **Build the Project**
@@ -96,28 +103,113 @@ spring:
       ddl-auto: update
 ```
 
-The API will be available at `http://localhost:8080`
+## 🐳 Docker Setup
 
-### Docker Setup (Alternative)
+### Running with Docker
 
 ```bash
 # Build the image
 docker build -t recipe-api .
 
-# Run with environment variables
+# Run with .env file (recommended)
+docker run -p 8080:8080 --env-file .env recipe-api
+
+# Or run with individual environment variables
 docker run -p 8080:8080 \
-  -e MISTRAL_API_KEY=your_key \
-  -e JWT_SECRET=your_secret \
+  -e JWT_SECRET=your_jwt_secret \
+  -e MISTRAL_API_KEY=your_mistral_ai_api_key \
   recipe-api
+```
+
+### Docker Compose (Recommended for Development)
+
+Create a `.env` file in your project root:
+
+```env
+JWT_SECRET=your_jwt_secret
+MISTRAL_API_KEY=your_mistral_ai_api_key
+```
+
+Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+services:
+  recipe-api:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - PORT=8080
+```
+
+Then run:
+```bash
+docker-compose up
+```
+
+### Using Pre-built Image from Docker Hub
+
+```bash
+# Pull and run the latest image
+docker run -p 8080:8080 \
+  -e JWT_SECRET=your_jwt_secret \
+  -e MISTRAL_API_KEY=your_mistral_ai_api_key \
+  votre-username/recipe-api:latest
 ```
 
 ## 🌐 Production Deployment
 
-The API is deployed and accessible at:
+### Automated Deployment
 
-**Production URL**: `https://recipe-api.railway.app`
+The application features automated CI/CD pipeline that:
 
-> Deployment not working - won't do it
+- **Triggers on every push to `main` branch**
+- **Runs automated tests**
+- **Builds and pushes Docker image to Docker Hub**
+- **Automatically deploys to Render.com**
+
+**Production URL**: `https://recipe-api-latest.onrender.com/`
+
+### Deployment Architecture
+
+```
+GitHub (push to main) 
+    ↓
+GitHub Actions CI/CD
+    ↓
+Docker Hub
+    ↓
+Render.com (automatic deployment via webhook)
+```
+
+### Environment Variables for Production
+
+Set these environment variables in your production environment (Render.com):
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `JWT_SECRET` | JWT signing secret (min. 32 chars) | ✅ |
+| `MISTRAL_API_KEY` | Mistral AI API key | ❌ |
+| `PORT` | Application port | ✅ (8080) |
+| `DB_USERNAME` | Database username (if using MySQL) | ❌ |
+| `DB_PASSWORD` | Database password (if using MySQL) | ❌ |
+
+### CI/CD Setup
+
+The project includes a GitHub Actions workflow (`.github/workflows/ci-cd.yml`) that automatically:
+
+1. **Runs tests** on every push
+2. **Builds Docker image** with optimized multi-stage build
+3. **Pushes to Docker Hub** with automatic tagging
+4. **Triggers deployment** on Render.com via webhook
+
+To set up CI/CD, configure these GitHub Secrets:
+- `DOCKERHUB_USERNAME`: Your Docker Hub username
+- `DOCKERHUB_TOKEN`: Your Docker Hub access token
+- `RENDER_DEPLOY_HOOK_URL`: Render deployment webhook URL
 
 ## 📚 API Documentation
 
@@ -264,6 +356,8 @@ The collection includes:
 - **Spring Boot Actuator** - Application monitoring
 - **Gradle** - Build tool and dependency management
 - **Java 17** - Programming language
+- **Docker** - Containerization
+- **GitHub Actions** - CI/CD pipeline
 
 ## 📖 API Schema
 
@@ -290,3 +384,5 @@ Error responses follow the standard HTTP status codes with descriptive messages.
 - Password encryption
 - CORS configuration
 - Input validation and sanitization
+- Secure Docker container with non-root user
+- Environment-based configuration for sensitive data
