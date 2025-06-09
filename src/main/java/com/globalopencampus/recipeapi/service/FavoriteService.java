@@ -78,11 +78,10 @@ public class FavoriteService {
         dto.setServings(recipe.getServings());
         dto.setCreatedAt(recipe.getCreatedAt());
 
-        // Set ratings and counts
         dto.setAverageRating(commentRepository.findAverageRatingByRecipeId(recipe.getId()));
         dto.setCommentCount(commentRepository.countByRecipeId(recipe.getId()));
         dto.setFavoriteCount(favoriteRepository.countByRecipeId(recipe.getId()));
-        dto.setIsFavorite(true); // Since this is from favorites list
+        dto.setIsFavorite(true);
 
         return dto;
     }

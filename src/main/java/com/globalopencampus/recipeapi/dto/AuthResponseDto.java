@@ -8,7 +8,6 @@ public class AuthResponseDto {
     private String email;
     private String role;
 
-    // Constructors
     public AuthResponseDto() {}
 
     public AuthResponseDto(String token, Long id, String username, String email, String role) {
@@ -19,7 +18,6 @@ public class AuthResponseDto {
         this.role = role;
     }
 
-    // Getters and Setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     public String getType() { return type; }

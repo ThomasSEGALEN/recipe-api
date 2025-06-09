@@ -11,14 +11,12 @@ public class AiRecipeSuggestionRequestDto {
     private String difficulty;
     private Integer maxTime;
 
-    // Constructors
     public AiRecipeSuggestionRequestDto() {}
 
     public AiRecipeSuggestionRequestDto(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    // Getters and Setters
     public List<String> getIngredients() { return ingredients; }
     public void setIngredients(List<String> ingredients) { this.ingredients = ingredients; }
     public String getCuisine() { return cuisine; }

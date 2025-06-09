@@ -8,14 +8,12 @@ public class AiChatRequestDto {
 
     private Long recipeId;
 
-    // Constructors
     public AiChatRequestDto() {}
 
     public AiChatRequestDto(String message) {
         this.message = message;
     }
 
-    // Getters and Setters
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
     public Long getRecipeId() { return recipeId; }

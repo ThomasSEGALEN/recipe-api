@@ -81,7 +81,6 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        // Save ingredients
         if (recipeDto.getIngredients() != null) {
             for (IngredientDto ingredientDto : recipeDto.getIngredients()) {
                 Ingredient ingredient = new Ingredient(ingredientDto.getName(),
@@ -115,7 +114,6 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        // Update ingredients
         if (recipeDto.getIngredients() != null) {
             ingredientRepository.deleteByRecipeId(id);
             for (IngredientDto ingredientDto : recipeDto.getIngredients()) {
@@ -171,18 +169,15 @@ public class RecipeService {
         dto.setCreatedAt(recipe.getCreatedAt());
         dto.setUpdatedAt(recipe.getUpdatedAt());
 
-        // Set ingredients
         List<IngredientDto> ingredients = recipe.getIngredients().stream()
                 .map(this::convertIngredientToDto)
                 .collect(Collectors.toList());
         dto.setIngredients(ingredients);
 
-        // Set ratings and counts
         dto.setAverageRating(commentRepository.findAverageRatingByRecipeId(recipe.getId()));
         dto.setCommentCount(commentRepository.countByRecipeId(recipe.getId()));
         dto.setFavoriteCount(favoriteRepository.countByRecipeId(recipe.getId()));
 
-        // Check if current user has favorited this recipe
         if (currentUserId != null) {
             dto.setIsFavorite(favoriteRepository.existsByUserIdAndRecipeId(currentUserId, recipe.getId()));
         }

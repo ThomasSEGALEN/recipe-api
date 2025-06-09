@@ -11,7 +11,6 @@ public class UserDto {
     private LocalDateTime createdAt;
     private Long recipeCount;
 
-    // Constructors
     public UserDto() {}
 
     public UserDto(Long id, String username, String email, Role role, LocalDateTime createdAt) {
@@ -22,7 +21,6 @@ public class UserDto {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }

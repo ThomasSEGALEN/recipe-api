@@ -21,7 +21,6 @@ public class CommentDto {
     private String recipeTitle;
     private LocalDateTime createdAt;
 
-    // Constructors
     public CommentDto() {}
 
     public CommentDto(String content, Integer rating) {
@@ -29,7 +28,6 @@ public class CommentDto {
         this.rating = rating;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getContent() { return content; }

@@ -11,7 +11,6 @@ public class LoginRequestDto {
     @NotBlank(message = "Password is required")
     private String password;
 
-    // Constructors
     public LoginRequestDto() {}
 
     public LoginRequestDto(String username, String password) {
@@ -19,7 +18,6 @@ public class LoginRequestDto {
         this.password = password;
     }
 
-    // Getters and Setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }

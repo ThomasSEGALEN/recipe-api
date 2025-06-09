@@ -32,11 +32,11 @@ public class Recipe {
 
     @Column(name = "preparation_time")
     @Min(value = 0, message = "Preparation time must be positive")
-    private Integer preparationTime; // en minutes
+    private Integer preparationTime;
 
     @Column(name = "cooking_time")
     @Min(value = 0, message = "Cooking time must be positive")
-    private Integer cookingTime; // en minutes
+    private Integer cookingTime;
 
     @Min(value = 1, message = "Servings must be at least 1")
     private Integer servings;
@@ -72,7 +72,6 @@ public class Recipe {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Constructors
     public Recipe() {
     }
 
@@ -84,17 +83,14 @@ public class Recipe {
         this.category = category;
     }
 
-    // Helper methods
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
         ingredient.setRecipe(this);
     }
-
     public void removeIngredient(Ingredient ingredient) {
         ingredients.remove(ingredient);
         ingredient.setRecipe(null);
     }
-
     public Double getAverageRating() {
         return comments.stream()
                 .filter(comment -> comment.getRating() != null)
@@ -102,138 +98,105 @@ public class Recipe {
                 .average()
                 .orElse(0.0);
     }
-
     public Integer getTotalTime() {
         int prep = preparationTime != null ? preparationTime : 0;
         int cook = cookingTime != null ? cookingTime : 0;
         return prep + cook;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public String getInstructions() {
         return instructions;
     }
-
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
-
     public Integer getPreparationTime() {
         return preparationTime;
     }
-
     public void setPreparationTime(Integer preparationTime) {
         this.preparationTime = preparationTime;
     }
-
     public Integer getCookingTime() {
         return cookingTime;
     }
-
     public void setCookingTime(Integer cookingTime) {
         this.cookingTime = cookingTime;
     }
-
     public Integer getServings() {
         return servings;
     }
-
     public void setServings(Integer servings) {
         this.servings = servings;
     }
-
     public Difficulty getDifficulty() {
         return difficulty;
     }
-
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
-
     public String getImageUrl() {
         return imageUrl;
     }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
     public Category getCategory() {
         return category;
     }
-
     public void setCategory(Category category) {
         this.category = category;
     }
-
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
-
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
-
     public List<Comment> getComments() {
         return comments;
     }
-
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-
     public List<Favorite> getFavorites() {
         return favorites;
     }
-
     public void setFavorites(List<Favorite> favorites) {
         this.favorites = favorites;
     }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }

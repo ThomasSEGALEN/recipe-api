@@ -1,4 +1,3 @@
-// WebSecurityConfig corrigée (sans warnings de dépréciation)
 package com.globalopencampus.recipeapi.config;
 
 import com.globalopencampus.recipeapi.security.AuthEntryPointJwt;
