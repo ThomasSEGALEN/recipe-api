@@ -171,7 +171,7 @@ The application features automated CI/CD pipeline that:
 - **Builds and pushes Docker image to Docker Hub**
 - **Automatically deploys to Render.com**
 
-**Production URL**: [Recipe API](https://recipe-api-latest.onrender.com/)
+**Production URL**: [Recipe API](https://recipe-api-latest.onrender.com/swagger-ui/index.html)
 
 ### Deployment Architecture
 
