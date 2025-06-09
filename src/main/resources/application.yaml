@@ -31,7 +31,7 @@ spring:
   # Mistral AI Configuration
   ai:
     mistralai:
-      api-key: ${MISTRAL_API_KEY:"H4ahht3cf8HMy8LyijpmyMjmRo6SJ4oM"}
+      api-key: ${MISTRAL_API_KEY:H4ahht3cf8HMy8LyijpmyMjmRo6SJ4oM}
       chat:
         enabled: true
         options:
@@ -43,8 +43,9 @@ spring:
 # JWT Configuration
 app:
   jwt:
-    secret: ${JWT_SECRET:"46c3e48c7dc6bc35eb6f5332254669a9a0a29111e6573d169a0fd38c6820b2cc"}
+    secret: ${JWT_SECRET:46c3e48c7dc6bc35eb6f5332254669a9a0a29111e6573d169a0fd38c6820b2cc}
     expiration: 86400000
+  url: ${APP_URL:http://localhost:8080}
 
 # Server Configuration
 server:
