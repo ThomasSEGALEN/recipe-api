@@ -1,4 +1,3 @@
-# Stage 1: Build the application
 FROM openjdk:17-jdk-slim AS builder
 
 WORKDIR /app
